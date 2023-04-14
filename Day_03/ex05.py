@@ -22,7 +22,7 @@ async def on_message(message):
     if message.content == '$hello':
         await message.channel.send('Hello!')
 
-    if message.content == '$greet':
+    elif message.content == '$greet':
         await message.channel.send(f"Hello {message.author.name}")
 
 client.run(os.getenv("TOKEN"))
