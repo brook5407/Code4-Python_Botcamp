@@ -7,7 +7,6 @@ from discord import Embed, File
 
 
 class Day05(commands.Cog, name='Day 05'):
-
   def __init__(self, bot):
     self.bot = bot
     self.emoji_api = requests.get(
@@ -17,9 +16,9 @@ class Day05(commands.Cog, name='Day 05'):
       'https://api.giphy.com/v1/gifs/random?api_key=heFoHbw4GhOjYFaNACiDgvwfIugmRSZw&tag=&rating=g'
     )
 
-  @commands.Cog.listener()
-  async def on_ready(self):
-    print("day 05 is running")
+  # @commands.Cog.listener()
+  # async def on_ready(self):
+  #   print("day 05 is running")
 
   @commands.command()
   async def emoji(self, ctx):
@@ -93,9 +92,32 @@ class Day05(commands.Cog, name='Day 05'):
     async with aiohttp.ClientSession() as session:
       async with session.get(url) as resp:
         if resp.status != 200:
-            return await ctx.send('Could not download file...')
+          return await ctx.send('Could not download file...')
         data = io.BytesIO(await resp.read())
         await ctx.send(file=File(data, 'tmp.png'))
 
+  @commands.command()
+  async def react(self, ctx):
+    """React an emoji to the message"""
+    await ctx.message.add_reaction('✔️')
+    message = ctx.message.content[7:]
+    if message:
+      response = requests.get(
+        f"https://emoji-api.com/emojis?search={message}&access_key=93a0b8c41787b2fe4ef88cdbce42ac50a0a25344"
+      )
+      emojis = response.json() if response.status_code == 200 else None
+      if emojis:
+        emoji = emojis[0]["character"]
+        await ctx.message.add_reaction(emoji)
+
+  @img.error
+  async def img_error(self, ctx, error):
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send("$img <image link>")
+    elif isinstance(error, commands.BadArgument):
+        await ctx.send("ERROR: invalid message")
+    else:
+        await ctx.send(f"ERROR: {error}")
+      
 async def setup(bot):
   await bot.add_cog(Day05(bot))
