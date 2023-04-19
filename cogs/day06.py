@@ -8,26 +8,30 @@ class Day06(commands.Cog, name='Day 06'):
       db["encouragements"] = []
     self.list = db["encouragements"]
 
-  @commands.Cog.listener()
-  async def on_ready(self):
-    print("day 05 is running")
+  # @commands.Cog.listener()
+  # async def on_ready(self):
+  #   print("day 06 is running")
 
   @commands.command()
   async def new(self, ctx, *, message):
+    """Add message to the database"""
     self.list.append(message)
     await ctx.send("new encouraging message added.")
 
   @commands.command()
   async def list(self, ctx):
+    """List all messages stored in database"""
     await ctx.send(list(self.list))
 
   @commands.command()
   async def delete(self, ctx, index: int):
+    """Delete specific message from database"""
     del(self.list[index])
     await ctx.send("Encouragement message deleted")
 
   @commands.command()
   async def del_list(self, ctx, index: int):
+    """Delete specific message from database and show the updated list of messages"""
     del(self.list[index])
     await ctx.send("Encouragement message deleted")
     await ctx.send(list(self.list))
