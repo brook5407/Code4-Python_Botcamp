@@ -9,9 +9,9 @@ class Day07(commands.Cog, name='Day 07'):
     self.bot = bot
     self.header = {"user-agent" : "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Safari/605.1.15"}
 
-  @commands.Cog.listener()
-  async def on_ready(self):
-    print("day 07 is running")
+  # @commands.Cog.listener()
+  # async def on_ready(self):
+  #   print("day 07 is running")
 
   @commands.command()
   async def scrap(self, ctx, url : str):
